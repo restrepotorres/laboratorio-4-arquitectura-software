@@ -1,17 +1,24 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
-import React from "react";
+import { useEffect } from "react";
 
-const GateCard = ({ admin = false, number = "{$number}" }) => {
+const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    admin ? (script.src = "./admin.js") : (script.src = "./client.js");
+
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   return (
-    <Stack
-      marginX={"40%"}
-      mb={5}
-    >
+    <Stack marginX={"40%"} mb={5}>
       <Typography variant="h4" align="left">
-        Gate {number}
+        Gate {gateNumber}
       </Typography>
       <Stack gap={1}>
-        <Typography>Flight number:</Typography>
         <TextField disabled={!admin}></TextField>
         <Typography>Destination</Typography>
         <TextField disabled={!admin}></TextField>
@@ -20,14 +27,16 @@ const GateCard = ({ admin = false, number = "{$number}" }) => {
         <Typography>Departure time </Typography>
         <TextField disabled={!admin}></TextField>
       </Stack>
-      {/* {admin && (
+      {admin && (
         <Button
+          className="updateButton"
+          id={`${gateNumber}`}
           variant="contained"
           sx={{ width: 100, marginLeft: "auto", marginTop: 2 }}
         >
           Update
         </Button>
-      )} */}
+      )}
     </Stack>
   );
 };

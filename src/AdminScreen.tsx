@@ -1,37 +1,23 @@
 import GateCard from "./GateCard";
-import { Button, List, ListItem, Stack, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { List, ListItem, Stack, Typography } from "@mui/material";
 const AdminScreen = ({ admin = false }) => {
-  const [isAdmin, setisAdmin] = useState(admin);
-
-
   return (
     <>
-
-
-
+      <script defer src="./client.js"></script>
       <Typography variant="h3" align="center">
-        {isAdmin ? `admin` : "cliente"} screen
+        {admin ? `admin` : "cliente"} screen
       </Typography>
       <Stack>
-        <Button
-          variant="contained"
-          sx={{ marginLeft: "auto" }}
-          onClick={() => setisAdmin(!isAdmin)}
-        >
-          Switch
-        </Button>
         <List>
           <ListItem key={1}>
-            <GateCard admin={isAdmin} />
-            <Button id="buttontest" variant="contained">
-                update adminscreen
-              </Button>
+            <GateCard admin={admin} gateNumber={"1"} />
+          </ListItem>
+          <ListItem key={2}>
+            <GateCard admin={admin} gateNumber={"2"} />
           </ListItem>
         </List>
       </Stack>
     </>
   );
 };
-
 export default AdminScreen;

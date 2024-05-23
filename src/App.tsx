@@ -20,7 +20,7 @@ function App() {
         <CssBaseline />
         <Routes>
           <Route path="/server" element={<AdminScreen admin={true} />} />
-          <Route path="/cliente" element={<AdminScreen admin={true} />} />
+          <Route path="/cliente" element={<AdminScreen admin={false} />} />
         </Routes>
       </ThemeProvider>
     </>
