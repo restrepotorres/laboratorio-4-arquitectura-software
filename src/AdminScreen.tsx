@@ -10,6 +10,8 @@ const AdminScreen = () => {
       </Typography>
       <Stack gap={3}>
         <GateCard admin={true} />
+        <GateCard admin={true} />
+        <GateCard admin={true} />
       </Stack>
     </>
   );

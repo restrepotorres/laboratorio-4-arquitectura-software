@@ -1,29 +1,31 @@
-import { Stack, TextField, Typography } from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
 
 const GateCard = ({ admin = false, number = "{$number}" }) => {
   return (
-    <>
-      <Typography variant="h4" align="center">
+    <Stack marginX={"20%"}>
+      <Typography variant="h4" align="left">
         Gate {number}
       </Typography>
-      <Stack
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "auto auto",
-          maxWidth: "50%",
-        }}
-      >
+      <Stack gap={1}>
         <Typography>Flight number:</Typography>
-        <TextField label="flightnumber" disabled={!admin}></TextField>
+        <TextField disabled={!admin}></TextField>
         <Typography>Destination</Typography>
-        <TextField label="destination" disabled={!admin}></TextField>
+        <TextField disabled={!admin}></TextField>
         <Typography>Airline</Typography>
-        <TextField label="Airline" disabled={!admin}></TextField>
+        <TextField disabled={!admin}></TextField>
         <Typography>Departure time </Typography>
-        <TextField label="Departure time" disabled={!admin}></TextField>
+        <TextField disabled={!admin}></TextField>
       </Stack>
-    </>
+      {admin && (
+        <Button
+          variant="contained"
+          sx={{ width: 100, marginLeft: "auto", marginTop: 2 }}
+        >
+          holi
+        </Button>
+      )}
+    </Stack>
   );
 };
 
