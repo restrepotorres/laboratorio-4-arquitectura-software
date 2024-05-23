@@ -1,6 +1,3 @@
-import { useState } from "react";
-import { Stack, TextField, Typography } from "@mui/material";
-import GateCard from "./GateCard";
 import { Route, Routes } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,15 +14,13 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Routes>
-          <Route path="/" element={<AdminScreen />} />
-          <Route path="/client" element={<GateCard admin={false} />} />
+          <Route path="/server" element={<AdminScreen admin={true} />} />
+          <Route path="/cliente" element={<AdminScreen admin={true} />} />
         </Routes>
       </ThemeProvider>
     </>
