@@ -4,27 +4,38 @@ import { useEffect, useState } from "react";
 const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
   const socket = io("http://localhost:3000");
 
-  const [reciveGateNumber, setreciveGateNumber] = useState("");
   const [flightNumber, setflightNumber] = useState("no value");
-  const [destination, setdestination] = useState("");
-  const [airLine, setairLine] = useState("");
-  const [departureTime, setdepartureTime] = useState("");
+  const [destination, setdestination] = useState("no value");
+  const [airLine, setairLine] = useState("no value");
+  const [departureTime, setdepartureTime] = useState("no value");
 
   useEffect(() => {
-    socket.on("message", (data) => {
-      setreciveGateNumber(data.gateNumber);
-      setflightNumber(data.flightNumber);
-      setdestination(data.destination);
-      setairLine(data.airLine);
-      setdepartureTime(data.departureTime);
+    socket.emit("new client", gateNumber, (response) => {
+      console.log(response);
+      setflightNumber(response.flightNumber);
+      setdestination(response.destination);
+      setairLine(response.airLine);
+      setdepartureTime(response.departureTime);
     });
   }, []);
 
-  const gateValidation = () => {
-    return !admin && reciveGateNumber === gateNumber;
-  };
+  useEffect(() => {
+    socket.on("init data", () => {
+      console.log(`conectado desde {}`);
+    });
+
+    socket.on("message", (data) => {
+      if (data.gateNumber === gateNumber) {
+        setflightNumber(data.flightNumber);
+        setdestination(data.destination);
+        setairLine(data.airLine);
+        setdepartureTime(data.departureTime);
+      }
+    });
+  }, []);
+
   return (
-    <Stack marginX={"40%"} mb={5}>
+    <Stack marginX={"10%"}>
       <Typography variant="h4" align="left">
         Gate {gateNumber}
       </Typography>
@@ -32,33 +43,32 @@ const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
         <Typography>Numero de vuelo</Typography>
         <TextField
           disabled={!admin}
-          value={gateValidation() ? flightNumber : undefined}
+          value={!admin ? flightNumber : undefined}
           onChange={(e) => setflightNumber(e.target.value)}
         ></TextField>
         <Typography>Destination</Typography>
         <TextField
           disabled={!admin}
-          value={gateValidation() ? destination : undefined}
+          value={!admin ? destination : undefined}
           onChange={(e) => setdestination(e.target.value)}
         ></TextField>
         <Typography>Airline</Typography>
         <TextField
           disabled={!admin}
-          value={gateValidation() ? airLine : undefined}
+          value={!admin ? airLine : undefined}
           onChange={(e) => setairLine(e.target.value)}
         ></TextField>
         <Typography>Departure time </Typography>
         <TextField
           disabled={!admin}
-          value={gateValidation() ? departureTime : undefined}
+          value={!admin ? departureTime : undefined}
           onChange={(e) => setdepartureTime(e.target.value)}
         ></TextField>
       </Stack>
       {admin && (
         <Button
-          id={`${gateNumber}`}
           variant="contained"
-          sx={{ width: 100, marginLeft: "auto", marginTop: 2 }}
+          sx={{ marginLeft: "auto", marginTop: 2 }}
           onClick={() => {
             socket.send({
               gateNumber: gateNumber,
@@ -69,7 +79,7 @@ const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
             });
           }}
         >
-          {`${gateNumber}`}
+          {`update gate: ${gateNumber}`}
         </Button>
       )}
     </Stack>
