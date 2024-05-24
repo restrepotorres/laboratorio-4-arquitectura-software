@@ -3,27 +3,18 @@ import { useEffect, useState } from "react";
 
 const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
   const socket = io("http://localhost:3000");
-
-  const [flightNumber, setflightNumber] = useState("no value");
-  const [destination, setdestination] = useState("no value");
-  const [airLine, setairLine] = useState("no value");
-  const [departureTime, setdepartureTime] = useState("no value");
+  const [flightNumber, setflightNumber] = useState("");
+  const [destination, setdestination] = useState("");
+  const [airLine, setairLine] = useState("");
+  const [departureTime, setdepartureTime] = useState("");
 
   useEffect(() => {
-    socket.emit("new client", gateNumber, (response) => {
-      console.log(response);
+    socket.emit("new gate listener", gateNumber, (response) => {
       setflightNumber(response.flightNumber);
       setdestination(response.destination);
       setairLine(response.airLine);
       setdepartureTime(response.departureTime);
     });
-  }, []);
-
-  useEffect(() => {
-    socket.on("init data", () => {
-      console.log(`conectado desde {}`);
-    });
-
     socket.on("message", (data) => {
       if (data.gateNumber === gateNumber) {
         setflightNumber(data.flightNumber);
@@ -35,7 +26,12 @@ const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
   }, []);
 
   return (
-    <Stack marginX={"10%"}>
+    <Stack
+      marginX={3}
+      sx={{ backgroundColor: "#0B1219" }}
+      padding={3}
+      borderRadius={4}
+    >
       <Typography variant="h4" align="left">
         Gate {gateNumber}
       </Typography>
@@ -85,5 +81,4 @@ const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
     </Stack>
   );
 };
-
 export default GateCard;
