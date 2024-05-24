@@ -1,25 +1,36 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
+  const socket = io("http://localhost:3000");
+
+  const [reciveGateNumber, setreciveGateNumber] = useState("");
+  const [testTypo, settestTypo] = useState("no value");
+
   useEffect(() => {
-    const script = document.createElement("script");
-    admin ? (script.src = "./admin.js") : (script.src = "./client.js");
-
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    socket.on("message", (data) => {
+      setreciveGateNumber(data.gateNumber);
+      settestTypo(data.envio);
+    });
   }, []);
+
+  const gateValidation = () => {
+    console.log(reciveGateNumber);
+    console.log(gateNumber);
+    return !admin && reciveGateNumber === gateNumber;
+  };
   return (
     <Stack marginX={"40%"} mb={5}>
       <Typography variant="h4" align="left">
         Gate {gateNumber}
       </Typography>
       <Stack gap={1}>
-        <TextField disabled={!admin}></TextField>
+        <Typography>Numero de vuelo</Typography>
+        <TextField
+          disabled={!admin}
+          value={gateValidation() ? testTypo : undefined}
+          onChange={(e) => settestTypo(e.target.value)}
+        ></TextField>
         <Typography>Destination</Typography>
         <TextField disabled={!admin}></TextField>
         <Typography>Airline</Typography>
@@ -29,12 +40,15 @@ const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
       </Stack>
       {admin && (
         <Button
-          className="updateButton"
+          className="updateButtonx"
           id={`${gateNumber}`}
           variant="contained"
           sx={{ width: 100, marginLeft: "auto", marginTop: 2 }}
+          onClick={() => {
+            socket.send({ gateNumber: gateNumber, envio: testTypo });
+          }}
         >
-          Update
+          {`el number es ${gateNumber}`}
         </Button>
       )}
     </Stack>

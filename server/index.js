@@ -1,7 +1,7 @@
 const log = console.log;
 const http = require("http").createServer();
 const io = require("socket.io")(http, {
-  cors:{origin:"*"}
+  cors: { origin: "*" },
 });
 const port = 3000;
 
@@ -13,9 +13,5 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("message", e);
   });
 });
-
-//cors
-
-
 
 io.on("disconect", (e) => log("conexion cerrada"));
