@@ -5,18 +5,22 @@ const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
   const socket = io("http://localhost:3000");
 
   const [reciveGateNumber, setreciveGateNumber] = useState("");
-  const [testTypo, settestTypo] = useState("no value");
+  const [flightNumber, setflightNumber] = useState("no value");
+  const [destination, setdestination] = useState("");
+  const [airLine, setairLine] = useState("");
+  const [departureTime, setdepartureTime] = useState("");
 
   useEffect(() => {
     socket.on("message", (data) => {
       setreciveGateNumber(data.gateNumber);
-      settestTypo(data.envio);
+      setflightNumber(data.flightNumber);
+      setdestination(data.destination);
+      setairLine(data.airLine);
+      setdepartureTime(data.departureTime);
     });
   }, []);
 
   const gateValidation = () => {
-    console.log(reciveGateNumber);
-    console.log(gateNumber);
     return !admin && reciveGateNumber === gateNumber;
   };
   return (
@@ -28,27 +32,44 @@ const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
         <Typography>Numero de vuelo</Typography>
         <TextField
           disabled={!admin}
-          value={gateValidation() ? testTypo : undefined}
-          onChange={(e) => settestTypo(e.target.value)}
+          value={gateValidation() ? flightNumber : undefined}
+          onChange={(e) => setflightNumber(e.target.value)}
         ></TextField>
         <Typography>Destination</Typography>
-        <TextField disabled={!admin}></TextField>
+        <TextField
+          disabled={!admin}
+          value={gateValidation() ? destination : undefined}
+          onChange={(e) => setdestination(e.target.value)}
+        ></TextField>
         <Typography>Airline</Typography>
-        <TextField disabled={!admin}></TextField>
+        <TextField
+          disabled={!admin}
+          value={gateValidation() ? airLine : undefined}
+          onChange={(e) => setairLine(e.target.value)}
+        ></TextField>
         <Typography>Departure time </Typography>
-        <TextField disabled={!admin}></TextField>
+        <TextField
+          disabled={!admin}
+          value={gateValidation() ? departureTime : undefined}
+          onChange={(e) => setdepartureTime(e.target.value)}
+        ></TextField>
       </Stack>
       {admin && (
         <Button
-          className="updateButtonx"
           id={`${gateNumber}`}
           variant="contained"
           sx={{ width: 100, marginLeft: "auto", marginTop: 2 }}
           onClick={() => {
-            socket.send({ gateNumber: gateNumber, envio: testTypo });
+            socket.send({
+              gateNumber: gateNumber,
+              flightNumber: flightNumber,
+              destination: destination,
+              airLine: airLine,
+              departureTime: departureTime,
+            });
           }}
         >
-          {`el number es ${gateNumber}`}
+          {`${gateNumber}`}
         </Button>
       )}
     </Stack>

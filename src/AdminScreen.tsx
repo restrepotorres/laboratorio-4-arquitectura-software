@@ -8,14 +8,8 @@ const AdminScreen = ({ admin = false }) => {
         {admin ? `admin` : "cliente"} screen
       </Typography>
       <Stack>
-        <List>
-          <ListItem key={1}>
-            <GateCard admin={admin} gateNumber={"1"} />
-          </ListItem>
-          <ListItem key={2}>
-            <GateCard admin={admin} gateNumber={"2"} />
-          </ListItem>
-        </List>
+        <GateCard admin={admin} gateNumber={"1"} />
+        <GateCard admin={admin} gateNumber={"2"} />
       </Stack>
     </>
   );
