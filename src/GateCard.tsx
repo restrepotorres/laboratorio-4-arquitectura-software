@@ -10,10 +10,12 @@ const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
 
   useEffect(() => {
     socket.emit("new gate listener", gateNumber, (response) => {
-      setflightNumber(response.flightNumber);
-      setdestination(response.destination);
-      setairLine(response.airLine);
-      setdepartureTime(response.departureTime);
+      if (response) {
+        setflightNumber(response.flightNumber);
+        setdestination(response.destination);
+        setairLine(response.airLine);
+        setdepartureTime(response.departureTime);
+      }
     });
     socket.on("message", (data) => {
       if (data.gateNumber === gateNumber) {
@@ -75,7 +77,7 @@ const GateCard = ({ admin = false, gateNumber = "{$number}" }) => {
             });
           }}
         >
-          {`update gate: ${gateNumber}`}
+          {`update gate ${gateNumber}`}
         </Button>
       )}
     </Stack>

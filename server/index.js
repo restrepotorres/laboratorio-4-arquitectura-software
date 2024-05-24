@@ -4,17 +4,16 @@ const io = require("socket.io")(http, {
   cors: { origin: "*" },
 });
 const port = 3000;
-const GateInfo = {}
+const GateInfo = {};
 
 http.listen(port, () => log(`server listening on port: ${port}`));
 io.on("connection", (socket) => {
   log("connected");
   socket.on("new gate listener", (arg, callback) => {
-    callback(GateInfo.arg);  
+    callback(GateInfo[arg]);
   });
   socket.on("message", (e) => {
-    lastGateData[e.gateNumber -1 ] =e
-    GateInfo[e.gateNumber] = e
+    GateInfo[e.gateNumber] = e;
     socket.broadcast.emit("message", e);
   });
 });
