@@ -19,8 +19,8 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Routes>
-          <Route path="/server" element={<AdminScreen admin={true} />} />
-          <Route path="/cliente" element={<AdminScreen admin={false} />} />
+          <Route path="/admin" element={<AdminScreen admin={true} />} />
+          <Route path="/*" element={<AdminScreen admin={false} />} />
         </Routes>
       </ThemeProvider>
     </>
