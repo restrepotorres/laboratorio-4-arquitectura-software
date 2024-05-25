@@ -1,13 +1,13 @@
 import GateCard from "./GateCard";
 import { List, ListItem, Stack, Typography } from "@mui/material";
-const AdminScreen = ({ admin = false }) => {
+const GatePanel = ({ admin = false }) => {
   return (
     <>
       <Typography
         variant="h2"
         align="center"
         mb={4}
-        sx={{ backgroundColor: "#76ABAE", maxWidth: "35%", marginTop:2}}
+        sx={{ backgroundColor: "#76ABAE", maxWidth: "35%", marginTop: 2 }}
         marginX={"auto"}
         borderRadius={10}
       >
@@ -30,4 +30,4 @@ const AdminScreen = ({ admin = false }) => {
     </>
   );
 };
-export default AdminScreen;
+export default GatePanel;
